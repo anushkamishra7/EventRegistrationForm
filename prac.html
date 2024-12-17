@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Booking Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 15px 0 5px;
+        }
+        
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="email"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .terms-label {
+            font-size: 0.9em;
+            color: #555;
+        }
+        
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Event Booking</h1>
+        <form id="bookingForm" onsubmit="return validateEvent(event)">
+            <label for="u_name">Participant Name:</label>
+            <input type="text" id="u_name" name="u_name" placeholder="Enter your name" required />
+            <span id="u_name_error" class="error"></span>
+            
+            <label for="name1">Parent Name:</label>
+            <input type="text" id="name1" name="name1" placeholder="Enter parent's name" required />
+            <span id="name1_error" class="error"></span>
+            
+            <label for="num">Mobile Number:</label>
+            <input type="text" id="num" name="num" placeholder="Enter 10-digit mobile number" pattern="\d{10}" required />
+            <span id="num_error" class="error"></span>
+            
+            <label for="em">Email ID:</label>
+            <input type="email" id="em" name="em" placeholder="Enter your email address" required />
+            <span id="em_error" class="error"></span>
+            
+            <label class="terms-label">
+                <input type="checkbox" id="terms" /> I accept all the terms and conditions
+            </label>
+            <span id="terms_error" class="error"></span>
+
+            <input type="submit" value="Register" />
+        </form>
+    </div>
+
+    <script>
+        function validateEvent(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form field values
+            var participant = document.getElementById('u_name').value;
+            var parent = document.getElementById('name1').value;
+            var mobile = document.getElementById('num').value;
+            var email = document.getElementById('em').value;
+            var termsChecked = document.getElementById('terms').checked;
+
+            // Clear any previous error messages
+            document.getElementById('u_name_error').innerText = "";
+            document.getElementById('name1_error').innerText = "";
+            document.getElementById('num_error').innerText = "";
+            document.getElementById('em_error').innerText = "";
+            document.getElementById('terms_error').innerText = "";
+
+            let valid = true;
+
+            // Field validations
+            if (participant.trim() === "") {
+                document.getElementById('u_name_error').innerText = "Participant name is required.";
+                valid = false;
+            }
+
+            if (parent.trim() === "") {
+                document.getElementById('name1_error').innerText = "Parent name is required.";
+                valid = false;
+            }
+
+            if (!/\d{10}/.test(mobile)) {
+                document.getElementById('num_error').innerText = "Enter a valid 10-digit mobile number.";
+                valid = false;
+            }
+
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+                document.getElementById('em_error').innerText = "Enter a valid email address.";
+                valid = false;
+            }
+
+            if (!termsChecked) {
+                document.getElementById('terms_error').innerText = "You must accept the terms and conditions.";
+                valid = false;
+            }
+
+            // Final check before alerting
+            if (valid) {
+                alert(
+                    "Registration Completed!\n\n" +
+                    "Your Registration Details:\n" +
+                    "Participant Name: " + participant + "\n" +
+                    "Parent Name: " + parent + "\n" +
+                    "Mobile Number: " + mobile + "\n" +
+                    "Email: " + email
+                );
+                document.getElementById('bookingForm').reset(); // Reset the form
+            }
+            return valid;
+        }
+    </script>
+</body>
+</html>
